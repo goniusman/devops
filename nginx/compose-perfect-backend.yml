@@ -7,7 +7,7 @@ services:
     volumes: 
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
-      - devops_mynet
+      - mynet
   dbs:
     image: mongo
     container_name: dbs
@@ -16,7 +16,7 @@ services:
     volumes:
       - mongovol:/data/db  
     networks:
-      - devops_mynet
+      - mynet
   redis:
     image: redis
     container_name: redis
@@ -25,25 +25,17 @@ services:
     volumes:
       - redisvol:/data/db
     networks:
-      - devops_mynet
+      - mynet
   backendwnode:
-    image: goniusman/backend:master-12e29b9
-    # container_name: backendwnode
-    # ports:
-    #   - "5001:5000"
+    image: goniusman/backend:master-2ff56e9
     networks:
-      - devops_mynet
-    # volumes:
-      # - ./:/app
-      # - /app/node_modules
+      - mynet
     environment:
       - ports=5000
-      - MONGODB_LOCAL=dbs 
+      - MONGODB_local=dbs 
       - REDIS_HOST=redis
-      - MONGODB_LOCAL_PORT=27017
+      - MONGODB_PORT=27017
       - REDIS_PORT=6379
-    # env_file:
-    #   - ./.env
     depends_on:
       - dbs
       - redis
@@ -51,5 +43,5 @@ volumes:
   mongovol:
   redisvol:
 networks:
-  devops_mynet:
+  mynet:
     driver: bridge
