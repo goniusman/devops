@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: goniusman/backend:latest
+        image: goniusman/backend:master-c069f92
         ports:
         - containerPort: 3000
         env:
