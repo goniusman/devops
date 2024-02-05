@@ -21,7 +21,7 @@ spec:
         image: goniusman/backend:master-bdd404b
         # image: nanajanashia/k8s-demo-app:v1.0
         ports:
-        - containerPort: 3000
+        - containerPort: 5000
         env:
         - name: USER_NAME
           valueFrom:
@@ -57,5 +57,5 @@ spec:
   ports:
     - protocol: TCP
       port: 3000
-      targetPort: 3000
+      targetPort: 5000
       nodePort: 30100
