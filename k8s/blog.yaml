@@ -2,23 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webapp-deployment
+  name: blog-deployment
   labels:
-    app: webapp
+    app: blog
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: webapp
+      app: blog
   template:
     metadata:
       labels:
-        app: webapp
+        app: blog
     spec:
       containers:
-      - name: webapp
-        image: goniusman/backend:master-bdd404b
-        # image: nanajanashia/k8s-demo-app:v1.0
+      - name: blog
+        image: goniusman/backend:master-c069f92
         ports:
         - containerPort: 3000
         env:
@@ -32,28 +31,32 @@ spec:
             secretKeyRef:
               name: mongo-secret
               key: mongo-password 
-        - name: MONGODB_URL
+        - name: DB_URL
           valueFrom:
             configMapKeyRef:
               name: mongo-config
               key: mongo-url
-        - name: REDIS_URL
+        - name: REDIS
           valueFrom:
             configMapKeyRef:
               name: redis-config
               key: redis-url
 
+
+
+
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: webapp-service
+  name: blog-service
 spec:
   type: NodePort
   selector:
-    app: webapp
+    app: blog
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-      nodePort: 30100
+      nodePort: 30200
