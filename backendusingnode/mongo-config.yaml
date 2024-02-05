@@ -4,5 +4,5 @@ metadata:
   name: mongo-config
   namespace: backendusingnode
 data:
-  mongo-url: mongodb://username:password@mongo-service:27017
+  mongo-url: mongodb://root:example@mongo-service:27017
   
