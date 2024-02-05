@@ -27,6 +27,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-service
+  namespace: backendusingnode
 spec:
   selector:
     app: redis
