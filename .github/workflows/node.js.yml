@@ -21,7 +21,7 @@ jobs:
       - name: Update Tag in YAML
         id: update_yaml
         run: |
-           sed -i "s#${{ steps.read_tag.outputs.old_tag }}#${{ steps.set_tag.outputs.tag }}#g" webapp.yaml
+           sed -i "s#${{ steps.read_tag.outputs.old_tag }}#${{ github.event.client_payload.tag }}#g" webapp.yaml
         working-directory: backendusingnode
 
       - name: Commit and Push Updated YAML
