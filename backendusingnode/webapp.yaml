@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: goniusman/backend:master-bdd404b
+        image: goniusman/backend:master-f8596f7
         # image: nanajanashia/k8s-demo-app:v1.0
         ports:
         - containerPort: 5000
