@@ -1,0 +1,32 @@
+name: Update Kubernetes Manifest
+on:
+    repository_dispatch:
+        types: [update-image-tag] # Match the event type from Repo A
+
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo B
+        uses: actions/checkout@v2
+
+      - name: Read Existing Tag from YAML
+        id: read_tag
+        run: |
+          OLD_TAG=$(yq e '.spec.template.spec.containers[0].image' webapp.yaml)
+          echo "::set-output name=old_tag::$OLD_TAG"
+        working-directory: backendusingnode
+
+      - name: Update Tag in YAML
+        id: update_yaml
+        run: |
+          sed -i "s/${{ steps.read_tag.outputs.old_tag }}/${{ steps.set_tag.outputs.tag }}/g" webapp.yaml
+        working-directory: backendusingnode
+
+      - name: Commit and Push Updated YAML
+        run: |
+          git add webapp.yaml
+          git commit -m "Update Docker image tag dynamically"
+          git push
+        working-directory: backendusingnode
