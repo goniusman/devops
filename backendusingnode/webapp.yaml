@@ -23,16 +23,16 @@ spec:
         ports:
         - containerPort: 5000
         env:
-        - name: USER_NAME
-          valueFrom:
-            secretKeyRef:
-              name: mongo-secret
-              key: mongo-user
-        - name: USER_PWD
-          valueFrom:
-            secretKeyRef:
-              name: mongo-secret
-              key: mongo-password 
+        # - name: USER_NAME
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mongo-secret
+        #       key: mongo-user
+        # - name: USER_PWD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mongo-secret
+        #       key: mongo-password 
         - name: MONGODB_URL
           valueFrom:
             configMapKeyRef:
