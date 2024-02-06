@@ -18,11 +18,20 @@ jobs:
           echo "::set-output name=old_tag::$OLD_TAG"
         working-directory: backendusingnode
 
+
+      - name: Debug Tag Values
+        run: |
+          echo "Old tag: ${{ steps.read_tag.outputs.old_tag }}"
+          echo "New tag: ${{ github.event.client_payload.tag }}"
+          echo "New tag: ami osman goni...."
+
       - name: Update Tag in YAML
         id: update_yaml
         run: |
-         sed -i "s|image: goniusman/backend:${{ steps.read_tag.outputs.old_tag }}|image: goniusman/backend:${{ github.event.client_payload.tag }}|" webapp.yaml
+          sed -i "s|image: ${{ steps.read_tag.outputs.old_tag }}|image: goniusman/backend:${{ github.event.client_payload.tag }}|" webapp.yaml || echo "Failed to update YAML file"
         working-directory: backendusingnode
+      
+
 
       - name: Commit and Push Updated YAML
         run: |
