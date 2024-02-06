@@ -1,0 +1,224 @@
+
+# Docker Related Command and Docker Compose file
+
+# if you want to connect another container. kindly use gateway ip address
+
+# >>> push to hub
+# docker tag testingfotpractice:latest goniusman/testingfotpractice
+# docker push goniusman/testingfotpractice
+
+
+# docker run --name mongodb mongo:4.0.4
+# docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:4.0.4
+# docker exec -it mongodb bash   >>> for open internal terminal
+# docker exec -it container bin/sh
+# docker system prune
+# docker rm container -fv
+
+# /// for visiting about the container details
+# docker run -it --net mynet netshot01 nicolaka/netshoot
+# dig containerID
+# kaizen
+
+# *********** it's working perfectlly with redis + mongo in container ***********
+# docker run -d --name latestapp -v G:\PracticeProject\NodeJs\backendwnode:/app:ro -v /app/node_modules -p 5001:5000 --env-file G:\PracticeProject\NodeJs\backendwnode/.env  latestnodeapp
+# >>>>>> Docker Compose Command for my backend prj
+# docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --scale backendwnode=2
+
+# docker run -d --name latestapp -v G:\PracticeProject\NodeJs\backendwnode:/app:ro -v /app/node_modules -p 5001:5000 -e MONGODB_local=172.17.0.2 -e MONGODB_PORT=27017 -e REDIS_HOST=172.17.0.3 -e REDIS_PORT=6379 latestnodeapp
+
+
+# docker build --pull --rm -f Dockerfile -t backendnode:latest .
+# docker run --rm -d --name mynode -v myvol:/app --net customnet -p 5000:5000 -e "MONGODB_live=10.1.4.1" -e "REDIS_HOST=10.1.4.0" backendwnode
+# docker run -d --name mynode -v myvol:/app --net customnet -p 5000:5000 -e "MONGODB_local=10.1.4.0" backendwnode
+# docker run -d --name mynode --net customnet -p 5000:5000 -e "MONGODB_local=10.1.4.0" backendwnode
+
+
+# /////////////////////// container creation with custom net
+# build a docker  >>>  
+# docker build --pull --rm -f Dockerfile -t backendwnode:version . 
+
+# docker run -d -e ROOT_URL=http://localhost -e MONGO_URL=mongodb://localhost:27017 --network="host"
+# (docker run --name projectname -v projectvol:/usr/src/app --net customnet -p 3000:3000 -e "MONGODB_HOST=172.19.0.2" imagename)
+# docker run -d --name mongodb --net customnet -p 27017:27017 mongo
+# docker network create --subnet 10.1.0.0/16 --gateway 10.1.0.1 --ip-range 10.1.4.0/24 customnet
+# docker run --rm -d --name mynode -v myvol:/app --net customnet -p 5000:5000 -e "MONGODB_live=10.1.4.0" -e "REDIS_HOST=10.1.4.1" backendusingnode
+
+# DOCKER 
+
+# > build an image ======  docker build -t first_node:1.0.0 .
+
+# >>>>> for linux
+# FROM node:latest
+# COPY package*.json ./
+# RUN npm install 
+# COPY . .  
+# EXPOSE 5000
+# CMD ["npm", "start" ]
+
+
+# #### mosh project example 
+# FROM node:14.16.0-alpine3.13
+# RUN addgroup app && adduser -S -G app app 
+# USER app 
+# WORKDIR /app 
+# COPY package*.json ./ 
+# RUN npm install
+# COPY . .
+# EXPOSE 3000
+# CMD [ "npm", "start" ]
+
+# >>>> for windows
+# FROM alpine:latest 
+# RUN apk add --no-cache nodejs npm yarn
+# WORKDIR /app
+# COPY . /app 
+# RUN npm install 
+# EXPOSE 5000
+# ENTRYPOINT [ "node" ]
+# CMD [ "src/server.js" ]
+
+# >> another example
+# FROM node:15
+# WORKDIR /app
+# COPY package.json .
+# RUN npm install
+# COPY . ./
+# EXPOSE 5000
+# CMD ["node", "index.js"]
+
+
+# docker build -t imagename:tag .
+# docker run -it imagename:tag
+# docker run -it -d -p hostport:dockerport image:tag
+
+# WORKDIR /usr/src/app
+# docker inspect imagename
+
+# docker inspect containername
+
+# >>> docker-compose up   or  docker-compose run app node
+
+# docker run -itd --name containername --network networkname -p host:local imagename:latest /bin/bash
+# docker exec -it -u root containername sh  """" for admin(root) login"""
+# docker-compose ps
+
+# //////////////////////    OSS/BSS   /////////////////////
+# ====== Docker and Kubernaties =============
+# docker tag bgappsession:latest moynuldocker/bgappsession:latest
+# docker push moynuldocker/bgappsession:latest
+# docker save -o E:\dockerImage\bgpayment2.tar moynuldocker/bgpayment:latest
+# --
+# docker tag bgpayment:latest bgpayment:v2
+# docker save -o E:\dockerImage\bgpaymentV2.tar bgpayment:v2
+# ---
+# docker load -i bgpaymentV2.tar
+# docker tag bgpayment:v2 10.10.13.37:5000/bgpayment:v2
+# docker push 10.10.13.37:5000/bgpayment:v2
+# ---
+# docker load -i bgappsession.tar
+# docker tag bgappsession:latest 10.10.13.37:5000/bgappsession:latest
+# docker push 10.10.13.37:5000/bgappsession:latest
+# kubectl apply -f deployment4AppSession.yaml
+
+# ---- Update docker Image----
+
+# docker ps
+# docker commit 366a65eb910f(container id of original images)  bgaccountcreation:1.0.0
+# docker tag bgaccountcreation:1.0.0 moynuldocker/bgaccountcreation:1.0.0
+# docker save -o E:\dockerImage\bgaccountcreation111.tar bgaccountcreation:1.0.0
+
+# docker load -i bgaccountcreation/bgaccountcreation111.tar
+# docker tag bgaccountcreation:1.0.0 10.10.13.37:5000/bgaccountcreation:1.0.0
+# docker push 10.10.13.37:5000/bgaccountcreation:1.0.0
+# kubectl apply -f bgaccountcreation/deployment4AccountCreation.yaml
+
+
+
+# =======Ha Master Edit=========
+
+# nano /etc/keepalived/keepalived.conf
+
+# frontend BGAppSession_front
+#         bind *:30882
+#         default_backend BGAppSession_back
+
+# backend BGAppSession_back
+#         balance roundrobin
+#         server kubenode1 10.10.13.19:30882 check weight 1
+#         server kubenode2 10.10.13.39:30882 check weight 1
+
+# sudo service haproxy status
+# sudo service haproxy restart
+
+#  tail .bash_history
+# http://118.67.215.166:8404/stats
+# http://118.67.215.166:30882/Swagger/index.html
+
+
+
+# Docker 
+# docker images
+# docker build -t nodejs-test-first:lastest .
+# docker run -p urlport:givingport -d imagename
+# docker run -it imagename
+# docker ps 
+# curl -i localhost:49160
+
+
+# Clean up docker workspace
+# docker image rm $(docker image ls -q)
+# docker container rm -f $(docker container ls -a -q)
+
+
+
+
+
+
+# ########################### pickbazar #########################
+# ///// create image using cmd. ( Without Compose )
+# imageforapp  >> docker build --pull --rm -f Dockerfile -t imagename:version .
+# container >> docker run -d -p outport:internalPo --name containerName imagename:version
+
+# contWithMongo >> docker run -d --name rest  -p 4000:5000 -e MONGODB_URI='mongodb://172.17.0.1' -e MONGODB_PORT=27018  nest:1.0.0
+
+# mongoImage >> docker run -d -p 27018:27017 --name mongodb mongo:latest
+
+# anotherExample >> docker run -d --name latestapp -v G:\PracticeProject\NodeJs\backendwnode:/app:ro -v /app/node_modules -p 5001:5000 -e MONGODB_local=172.17.0.2 -e MONGODB_PORT=27017 -e 
+# REDIS_HOST=172.17.0.3 -e REDIS_PORT=6379 latestnodeapp
+
+
+
+# ////////////////// Compose Up /////////////////////
+# docker compose up --detach
+# docker compose down --rmi all
+# docker compose list
+
+
+
+
+
+# >>>>>> few commands
+# docker start conid
+# docker stop conid
+# docker ps
+# docker ps -a
+
+# docker logs conid
+# docker exec -it conid/name /bin/bash  or /bin/sh
+# docker run -it imagename
+
+# docker network create custom-network
+
+# docker compose up --detach
+# docker compose down
+# docker-compose -f filename up --detach
+# docker-compose -f filename down
+
+
+
+
+
+
+
+
