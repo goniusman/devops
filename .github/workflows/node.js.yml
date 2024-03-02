@@ -35,8 +35,8 @@ jobs:
 
       - name: Commit and Push Updated YAML
         run: |
-          git config --global user.name 'goniusman'
-          git config --global user.email 'goniusman400@gmail.com'
+          git config --global user.name ${{ secrets.USERNAME }}
+          git config --global user.email ${{ secrets.USER_EMAIL }}
           git add webapp.yaml
           git commit -m "Update Docker image tag dynamically"
           git push
